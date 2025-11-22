@@ -1,3 +1,4 @@
+
 services:
   api:
     image: rguardado/api-rosas:latest
