@@ -1,6 +1,6 @@
 services:
   api:
-    image: rguardado/backend-rosas:latest
+    image: rguardado/api-rosas:latest
     container_name: api
     restart: unless-stopped
     ports:
