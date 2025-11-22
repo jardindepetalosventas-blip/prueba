@@ -1,29 +1,13 @@
 services:
   api:
-    image: rguardado/api-rosas:latest
+    image: rguardado/backend-rosas:latest
     container_name: api
-    restart: unless-stopped
-    ports:
-      - "7001:7001"
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: 7001
-      NODE_ENV: production
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_SECURE: ${SMTP_SECURE}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      EMAIL_FROM: ${EMAIL_FROM}
-
-      # 🔥 Redis interno
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: Agricola12*
-
+    env_file:
+      - .env
     depends_on:
       - redis
+    ports:
+      - "7001:7001"
 
   redis:
     image: redis:7-alpine
@@ -35,12 +19,7 @@ services:
       redis-server
       --appendonly yes
       --protected-mode no
-      --requirepass Agricola12*
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "Agricola12*", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      --bind 0.0.0.0
     volumes:
       - redis_data:/data
 
